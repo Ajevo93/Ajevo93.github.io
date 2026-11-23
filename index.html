@@ -44,6 +44,13 @@ body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;back
 @media(max-width:760px){#pcbCanvas{opacity:.58}}
 @media(prefers-reduced-motion:reduce){#pcbCanvas{display:none}}
 
+
+/* Flying word motion across portfolio copy */
+.fly-word{display:inline-block;transform-origin:50% 80%;animation:wordFlyIn .95s cubic-bezier(.16,1,.3,1) both;will-change:transform,opacity;transition:color .22s,text-shadow .22s}
+.fly-word:hover{color:#e9d5ff;text-shadow:0 0 14px #a78bfa;transform:translate3d(0,-5px,0) rotate(-2deg) scale(1.04)}
+@keyframes wordFlyIn{0%{opacity:0;transform:translate3d(var(--fly-x,0px),22px,0) rotate(var(--fly-r, -5deg)) scale(.88);filter:blur(3px)}65%{opacity:1;transform:translate3d(0,-3px,0) rotate(1deg) scale(1.02);filter:blur(0)}100%{opacity:1;transform:translate3d(0,0,0) rotate(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.fly-word{animation:none;will-change:auto}}
+
 </style>
 </head>
 <body><div id="progress"></div><div class="gridbg"></div><canvas id="pcbCanvas" aria-hidden="true"></canvas><div class="glow g1"></div><div class="glow g2"></div>
@@ -51,7 +58,7 @@ body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;back
 <main><section class="hero" id="top"><div><p class="eyebrow">Hi, I’m</p><h1 class="name">Ajay S</h1><div class="role"><span id="typed">Python Developer</span><span style="color:#67e8f9">|</span></div><p class="intro">I build Python systems that sense, predict and defend: from flood sensors in the field to AI that finds and fixes vulnerable code.</p><div class="actions"><a class="btn" href="#projects">View projects</a><a class="btn alt" href="#contact">Contact me</a></div></div><div class="scene"><div class="orbit"></div><div class="orbit two"></div><div class="cube"><div class="face front">Py</div><div class="face back">IoT</div><div class="face right">{ }</div><div class="face left">AI</div><div class="face top">RAG</div><div class="face bottom">&lt;/&gt;</div></div><span class="chip c1">Python</span><span class="chip c2">LLM</span><span class="chip c3">IoT</span><span class="chip c4">RAG</span></div></section>
 <section class="content" id="about"><h2 class="heading">About me</h2><div class="underline"></div><p class="about">I’m Ajay, a Python developer studying Electronics and Communication Engineering. Hardware and software meet in my work: I like projects where code reads the real world through sensors and signals, and projects where AI looks after the code itself.<br><br>Right now I’m building an IoT flood early-warning system and an LLM-based tool that finds and fixes vulnerabilities in source code.</p><div class="cards"><article class="card"><span class="tag">Degree</span><h3>B.E. Electronics and Communication Engineering</h3></article><article class="card"><span class="tag">College</span><h3>VSB College of Engineering and Technical Campus, Coimbatore</h3></article><article class="card"><span class="tag">Graduating</span><h3>2028</h3></article></div></section>
 <section class="content" id="skills"><h2 class="heading">Skills</h2><div class="underline"></div><div class="cards"><article class="card"><h3>Python</h3><p>My main language for IoT, data and AI work.</p></article><article class="card"><h3>Java</h3><p>Object-oriented programming and problem solving.</p></article><article class="card"><h3>HTML</h3><p>Semantic, accessible page structure.</p></article><article class="card"><h3>CSS</h3><p>Responsive layouts and animation.</p></article><article class="card"><h3>JavaScript</h3><p>Interactive front-end behaviour.</p></article></div></section>
-<section class="content" id="projects"><h2 class="heading">Projects</h2><div class="underline"></div><div class="cards"><article class="card"><span class="tag">IoT · Sensors · Forecasting</span><h3>IoT Based Smart Flood Forecasting and Early Warning System</h3><p>Sensors track water conditions in real time, forecast rising flood risk and raise early warnings so people can act before the water arrives.</p><a class="contact" href="https://github.com/Ajevo93">See my GitHub ↗</a></article><article class="card"><span class="tag">Python · LLM · RAG · Security</span><h3>Automated Vulnerability Detection and Remediation in Source Code Using LLM Models with RAG</h3><p>An LLM pipeline grounded with retrieval-augmented generation that scans source code for vulnerabilities and proposes fixes automatically.</p><a class="contact" href="https://github.com/Ajevo93">See my GitHub ↗</a></article></div></section>
+<section class="content" id="projects"><h2 class="heading">Creative Services</h2><div class="underline"></div><div class="cards"><article class="card"><span class="tag">Video Editing · Motion · Storytelling</span><h3>Video Editor</h3><p>I turn raw footage into engaging videos with clean cuts, smooth transitions, cinematic colour, sound sync and motion effects for social media and personal projects.</p><a class="contact" href="mailto:ajay905rs@gmail.com">Discuss a video project ↗</a></article><article class="card"><span class="tag">Photo Editing · Retouching · Colour</span><h3>Photo Editor</h3><p>I enhance photos with balanced colour grading, detailed retouching, background cleanup and polished compositions while keeping the subject natural and authentic.</p><a class="contact" href="mailto:ajay905rs@gmail.com">Discuss a photo project ↗</a></article></div></section>
 <section class="content" id="contact"><h2 class="heading">Let’s build something</h2><div class="underline"></div><div class="cards"><article class="card contact"><span class="tag">Email</span><h3><a href="mailto:ajay905rs@gmail.com">ajay905rs@gmail.com</a></h3></article><article class="card contact"><span class="tag">GitHub</span><h3><a href="https://github.com/Ajevo93">github.com/Ajevo93</a></h3></article><article class="card contact"><span class="tag">LinkedIn</span><h3><a href="https://www.linkedin.com/in/ajay-s-290aab411">Ajay S</a></h3></article></div></section></main><footer>© 2026 Ajay S. Built with care, code and motion.</footer>
 <script>
 const words=['Python Developer','IoT Builder','LLM & Security Explorer'];let wi=0,ci=0,del=false;const typed=document.getElementById('typed');function type(){const w=words[wi];typed.textContent=del?w.slice(0,ci--):w.slice(0,ci++);if(!del&&ci>w.length){del=true;setTimeout(type,1200);return}if(del&&ci<0){del=false;wi=(wi+1)%words.length;ci=0}setTimeout(type,del?42:85)}setTimeout(type,1200);
@@ -109,6 +116,37 @@ for(let i=0;i<18;i++){const p=document.createElement('i');p.className='particle'
    requestAnimationFrame(draw);
  }
  resize();addEventListener('resize',resize,{passive:true});requestAnimationFrame(draw);
+})();
+
+
+/* Split visible copy into independently flying words (keeps original wording intact) */
+(()=> {
+ const root=document.querySelector('main');
+ if(!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
+  acceptNode(node){
+   const value=node.nodeValue;
+   if(!value || !value.trim()) return NodeFilter.FILTER_REJECT;
+   const parent=node.parentElement;
+   if(!parent || parent.closest('script,style,canvas,#typed,.cube')) return NodeFilter.FILTER_REJECT;
+   return NodeFilter.FILTER_ACCEPT;
+  }
+ });
+ const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+ nodes.forEach(node=>{
+  const fragment=document.createDocumentFragment();
+  const pieces=node.nodeValue.split(/(\s+)/);let wordIndex=0;
+  pieces.forEach(piece=>{
+   if(!piece) return;
+   if(/^\s+$/.test(piece)){fragment.appendChild(document.createTextNode(piece));return}
+   const word=document.createElement('span');word.className='fly-word';word.textContent=piece;
+   word.style.animationDelay=((wordIndex++%14)*32)+'ms';
+   word.style.setProperty('--fly-x',((wordIndex%2?1:-1)*(3+(wordIndex%5)*2))+'px');
+   word.style.setProperty('--fly-r',((wordIndex%2?1:-1)*(2+(wordIndex%3)))+'deg');
+   fragment.appendChild(word);
+  });
+  node.parentNode.replaceChild(fragment,node);
+ });
 })();
 
 </script></body></html>
