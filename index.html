@@ -45,16 +45,15 @@ body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;back
 @media(prefers-reduced-motion:reduce){#pcbCanvas{display:none}}
 
 
-/* Vivid 3D flying typography — colorful, staggered, scroll-triggered */
-.fly-word{display:inline-block;position:relative;isolation:isolate;opacity:0;transform:translate3d(var(--sx),var(--sy),0) rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz)) scale(.48);transform-origin:50% 60%;filter:blur(8px) saturate(1.8);color:hsl(var(--hue) 96% 78%);text-shadow:0 0 8px hsla(var(--hue),100%,65%,.7),0 0 22px hsla(var(--hue),100%,60%,.36);transition:color .25s,text-shadow .25s;will-change:transform,opacity,filter}
+/* Original restrained violet/cyan portfolio palette with upgraded flying motion */
+.fly-word{display:inline-block;position:relative;isolation:isolate;opacity:0;transform:translate3d(var(--sx),var(--sy),0) rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz)) scale(.48);transform-origin:50% 60%;filter:blur(8px);color:#e2e8f0;text-shadow:0 0 7px #8b5cf633;transition:color .25s,text-shadow .25s;will-change:transform,opacity,filter}
 .fly-word.in-view{animation:wordLaunch 1.05s cubic-bezier(.16,1,.3,1) var(--delay) both}
-.fly-word.in-view:hover{color:#fff;text-shadow:0 0 10px #fff,0 0 24px hsl(var(--hue) 100% 65%),0 0 42px hsl(var(--hue) 100% 60%);transform:translateY(-7px) scale(1.12) rotate(-3deg);z-index:2}
-@keyframes wordLaunch{0%{opacity:0;transform:translate3d(var(--sx),var(--sy),0) rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz)) scale(.48);filter:blur(8px) saturate(2)}55%{opacity:1;transform:translate3d(0,-9px,0) rotateX(-8deg) rotateY(8deg) rotateZ(-2deg) scale(1.13);filter:blur(0) saturate(1.7)}75%{transform:translate3d(0,3px,0) rotateZ(1deg) scale(.97)}100%{opacity:1;transform:translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0) scale(1);filter:blur(0) saturate(1)}}
-.fly-word.in-view:nth-child(4n){text-shadow:0 0 12px hsla(var(--hue),100%,65%,.8),0 0 28px hsla(var(--hue),100%,60%,.45)}
+.fly-word.in-view:hover{color:#e9d5ff;text-shadow:0 0 10px #a78bfa,0 0 24px #8b5cf688;transform:translateY(-7px) scale(1.12) rotate(-3deg);z-index:2}
+@keyframes wordLaunch{0%{opacity:0;transform:translate3d(var(--sx),var(--sy),0) rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz)) scale(.48);filter:blur(8px)}55%{opacity:1;transform:translate3d(0,-9px,0) rotateX(-8deg) rotateY(8deg) rotateZ(-2deg) scale(1.13);filter:blur(0)}75%{transform:translate3d(0,3px,0) rotateZ(1deg) scale(.97)}100%{opacity:1;transform:translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0) scale(1);filter:blur(0)}}
+.fly-word.in-view:nth-child(4n){text-shadow:0 0 9px #8b5cf655,0 0 20px #22d3ee22}
 @media(hover:hover){.fly-word:hover{animation:wordHover .55s ease both}}
 @keyframes wordHover{50%{transform:translateY(-9px) rotate(4deg) scale(1.15)}100%{transform:translateY(-4px) rotate(-2deg) scale(1.08)}}
 @media(prefers-reduced-motion:reduce){.fly-word{opacity:1;transform:none;filter:none;animation:none!important;will-change:auto}}
-
 </style>
 </head>
 <body><div id="progress"></div><div class="gridbg"></div><canvas id="pcbCanvas" aria-hidden="true"></canvas><div class="glow g1"></div><div class="glow g2"></div>
