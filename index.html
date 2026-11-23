@@ -37,9 +37,16 @@
 @keyframes pulseGlow{0%,100%{transform:scale(.8);opacity:.35}50%{transform:scale(1.25);opacity:.8}}
 @keyframes particleRise{0%{transform:translate3d(0,25px,0) scale(.4);opacity:0}15%{opacity:.8}85%{opacity:.5}100%{transform:translate3d(30px,-105vh,0) scale(1.2);opacity:0}}
 
+
+/* Animated electronics / PCB background */
+#pcbCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.78}
+body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 25%,#05060b88 100%)}
+@media(max-width:760px){#pcbCanvas{opacity:.58}}
+@media(prefers-reduced-motion:reduce){#pcbCanvas{display:none}}
+
 </style>
 </head>
-<body><div id="progress"></div><div class="gridbg"></div><div class="glow g1"></div><div class="glow g2"></div>
+<body><div id="progress"></div><div class="gridbg"></div><canvas id="pcbCanvas" aria-hidden="true"></canvas><div class="glow g1"></div><div class="glow g2"></div>
 <header class="nav"><a class="brand" href="#top">Ajay<span>.</span></a><nav class="links"><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#contact">Contact</a></nav><button class="menu" onclick="document.querySelector('.links').style.display=document.querySelector('.links').style.display==='flex'?'none':'flex'">Menu</button></header>
 <main><section class="hero" id="top"><div><p class="eyebrow">Hi, I’m</p><h1 class="name">Ajay S</h1><div class="role"><span id="typed">Python Developer</span><span style="color:#67e8f9">|</span></div><p class="intro">I build Python systems that sense, predict and defend: from flood sensors in the field to AI that finds and fixes vulnerable code.</p><div class="actions"><a class="btn" href="#projects">View projects</a><a class="btn alt" href="#contact">Contact me</a></div></div><div class="scene"><div class="orbit"></div><div class="orbit two"></div><div class="cube"><div class="face front">Py</div><div class="face back">IoT</div><div class="face right">{ }</div><div class="face left">AI</div><div class="face top">RAG</div><div class="face bottom">&lt;/&gt;</div></div><span class="chip c1">Python</span><span class="chip c2">LLM</span><span class="chip c3">IoT</span><span class="chip c4">RAG</span></div></section>
 <section class="content" id="about"><h2 class="heading">About me</h2><div class="underline"></div><p class="about">I’m Ajay, a Python developer studying Electronics and Communication Engineering. Hardware and software meet in my work: I like projects where code reads the real world through sensors and signals, and projects where AI looks after the code itself.<br><br>Right now I’m building an IoT flood early-warning system and an LLM-based tool that finds and fixes vulnerabilities in source code.</p><div class="cards"><article class="card"><span class="tag">Degree</span><h3>B.E. Electronics and Communication Engineering</h3></article><article class="card"><span class="tag">College</span><h3>VSB College of Engineering and Technical Campus, Coimbatore</h3></article><article class="card"><span class="tag">Graduating</span><h3>2028</h3></article></div></section>
@@ -56,5 +63,52 @@ const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{i
 revealTargets.forEach(el=>revealObserver.observe(el));
 document.querySelectorAll('.cards').forEach(group=>group.querySelectorAll('.card').forEach((card,index)=>card.style.transitionDelay=(index*110)+'ms'));
 for(let i=0;i<18;i++){const p=document.createElement('i');p.className='particle';p.style.left=(Math.random()*100)+'vw';p.style.bottom=(-Math.random()*100)+'px';p.style.animationDuration=(9+Math.random()*13)+'s';p.style.animationDelay=(-Math.random()*18)+'s';p.style.opacity='.65';document.body.appendChild(p)}
+
+
+/* Lightweight animated PCB circuit field: glowing traces and travelling signals */
+(()=> {
+ const canvas=document.getElementById('pcbCanvas');
+ if(!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+ const ctx=canvas.getContext('2d',{alpha:true});
+ let w=0,h=0,dpr=1,paths=[],last=0;
+ const resize=()=>{
+   dpr=Math.min(window.devicePixelRatio||1,1.5); w=innerWidth; h=innerHeight;
+   canvas.width=Math.floor(w*dpr); canvas.height=Math.floor(h*dpr);
+   canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);
+   paths=[];
+   const step=w<700?46:58, cols=Math.ceil(w/step), rows=Math.ceil(h/step);
+   for(let i=0;i<Math.min(90,Math.floor(cols*rows*.18));i++){
+     let x=Math.floor(Math.random()*cols)*step, y=Math.floor(Math.random()*rows)*step;
+     const pts=[{x,y}], turns=2+Math.floor(Math.random()*4), dir=Math.random()<.5?0:1;
+     for(let j=0;j<turns;j++){
+       if(dir===0){x=Math.max(0,Math.min(w,x+(Math.random()<.5?-1:1)*step*(1+Math.floor(Math.random()*3))))}
+       else{y=Math.max(0,Math.min(h,y+(Math.random()<.5?-1:1)*step*(1+Math.floor(Math.random()*3))))}
+       pts.push({x,y});
+     }
+     const lengths=[0];let total=0;
+     for(let j=1;j<pts.length;j++){total+=Math.hypot(pts[j].x-pts[j-1].x,pts[j].y-pts[j-1].y);lengths.push(total)}
+     paths.push({pts,lengths,total,phase:Math.random(),speed:.035+Math.random()*.055,hue:Math.random()<.55?'violet':'cyan'});
+   }
+ };
+ function pointAt(p,t){
+   const d=t*p.total;let i=1;while(i<p.lengths.length-1&&p.lengths[i]<d)i++;
+   const a=p.pts[i-1],b=p.pts[i],span=p.lengths[i]-p.lengths[i-1],q=span?(d-p.lengths[i-1])/span:0;
+   return{x:a.x+(b.x-a.x)*q,y:a.y+(b.y-a.y)*q};
+ }
+ function draw(now){
+   const dt=Math.min((now-last)/1000||.016,.05);last=now;ctx.clearRect(0,0,w,h);
+   for(const p of paths){
+     const color=p.hue==='violet'?'167,139,250':'34,211,238';
+     ctx.beginPath();p.pts.forEach((v,i)=>i?ctx.lineTo(v.x,v.y):ctx.moveTo(v.x,v.y));
+     ctx.strokeStyle='rgba('+color+',.13)';ctx.lineWidth=1;ctx.stroke();
+     p.phase=(p.phase+p.speed*dt)%1;const head=pointAt(p,p.phase);
+     ctx.save();ctx.shadowBlur=13;ctx.shadowColor='rgba('+color+',.9)';
+     ctx.fillStyle='rgba('+color+',.95)';ctx.beginPath();ctx.arc(head.x,head.y,2.1,0,Math.PI*2);ctx.fill();ctx.restore();
+     p.pts.forEach((v,i)=>{if(i===p.pts.length-1||i===0){ctx.beginPath();ctx.arc(v.x,v.y,1.6,0,Math.PI*2);ctx.fillStyle='rgba('+color+',.35)';ctx.fill()}});
+   }
+   requestAnimationFrame(draw);
+ }
+ resize();addEventListener('resize',resize,{passive:true});requestAnimationFrame(draw);
+})();
 
 </script></body></html>
